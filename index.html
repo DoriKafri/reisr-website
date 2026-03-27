@@ -482,6 +482,12 @@ main { padding-top: 72px; }
 .service-feature-check { color: var(--sage-600); font-weight: 700; flex-shrink: 0; margin-top: 2px; }
 
 /* ===== CITY GUIDE ===== */
+.city-nav { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 40px; padding: 8px; background: var(--stone-100); border-radius: var(--r-lg); }
+.city-nav-btn { padding: 10px 20px; border-radius: var(--r-sm); font-size: 0.875rem; font-weight: 600; background: transparent; border: none; color: var(--charcoal-500); cursor: pointer; transition: all 0.25s; white-space: nowrap; }
+.city-nav-btn:hover { background: var(--white); color: var(--charcoal-700); }
+.city-nav-btn.active { background: var(--sea-700); color: white; box-shadow: var(--shadow-sm); }
+.city-section { display: none; }
+.city-section.active { display: block; }
 .city-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: -40px; position: relative; z-index: 2; }
 .stat-card {
   background: var(--white); border-radius: var(--r-lg); padding: 24px;
@@ -497,6 +503,20 @@ main { padding-top: 72px; }
 .neighborhood-card:hover { box-shadow: var(--shadow-md); }
 .neighborhood-card h4 { margin-bottom: 8px; }
 .neighborhood-vibe { font-size: 0.813rem; color: var(--sea-700); font-weight: 500; margin-bottom: 12px; }
+.city-articles { margin-top: 48px; }
+.city-articles h3 { margin-bottom: 24px; }
+.city-article-card { display: flex; gap: 20px; padding: 24px; background: var(--white); border: 1px solid var(--stone-200); border-radius: var(--r-lg); margin-bottom: 16px; transition: all 0.3s; }
+.city-article-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.city-article-icon { width: 56px; height: 56px; border-radius: var(--r-sm); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; background: linear-gradient(135deg, var(--sea-100), var(--sage-100)); }
+.city-article-body h4 { font-size: 1rem; margin-bottom: 6px; }
+.city-article-body p { font-size: 0.875rem; color: var(--charcoal-500); margin-bottom: 6px; }
+.city-article-meta { font-size: 0.75rem; color: var(--charcoal-300); }
+.news-section { margin-top: 48px; padding-top: 40px; border-top: 1px solid var(--stone-200); }
+.news-card { display: flex; gap: 16px; padding: 20px; background: var(--stone-50); border-radius: var(--r-lg); margin-bottom: 12px; align-items: flex-start; }
+.news-source { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--sea-700); background: var(--sea-100); padding: 4px 10px; border-radius: var(--r-full); white-space: nowrap; flex-shrink: 0; }
+.news-card h4 { font-size: 0.938rem; margin-bottom: 4px; }
+.news-card p { font-size: 0.813rem; color: var(--charcoal-500); }
+.news-date { font-size: 0.7rem; color: var(--charcoal-300); margin-top: 4px; }
 
 /* ===== BLOG / RESOURCES ===== */
 .resource-filters { display: flex; gap: 12px; margin-top: 32px; flex-wrap: wrap; }
@@ -572,6 +592,10 @@ main { padding-top: 72px; }
   .service-detail:nth-child(even) { direction: ltr; }
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
   .city-stats { grid-template-columns: repeat(2, 1fr); }
+  .city-nav { gap: 6px; padding: 6px; }
+  .city-nav-btn { padding: 8px 14px; font-size: 0.8rem; }
+  .city-article-card { flex-direction: column; gap: 12px; }
+  .city-article-icon { width: 44px; height: 44px; font-size: 1.2rem; }
   .about-story { grid-template-columns: 1fr; gap: 32px; }
   .about-values { grid-template-columns: 1fr; }
   .booking-layout { grid-template-columns: 1fr; }
@@ -1299,92 +1323,364 @@ main { padding-top: 72px; }
 <!--                    CITY GUIDE PAGE                            -->
 <!-- ============================================================ -->
 <div class="page" id="page-cities">
-  <section class="page-hero" style="padding-bottom:80px;">
+  <section class="page-hero" style="padding-bottom:40px;">
     <div class="container">
-      <div class="breadcrumb"><a href="#" onclick="showPage('home');return false">Home</a> / City Guides / Tel Aviv</div>
-      <p class="overline">City Guide</p>
-      <h1>Tel Aviv — Living, buying, and investing in Israel's Mediterranean hub</h1>
-      <p>The city that never sleeps, on the beach. Tel Aviv is Israel's economic engine, cultural heart, and most in-demand real estate market. Here's what you need to know before buying.</p>
+      <div class="breadcrumb"><a href="#" onclick="showPage('home');return false">Home</a> / City Guides</div>
+      <p class="overline">City Guides</p>
+      <h1>Find the right city for your Israel property purchase</h1>
+      <p>Every city has a different personality, price range, and lifestyle. Explore each one to see which fits your goals — written by Yuval from years of on-the-ground experience.</p>
     </div>
   </section>
 
-  <section class="section" style="padding-top:0;">
+  <section class="section" style="padding-top:16px;">
     <div class="container">
-      <div class="city-stats">
-        <div class="stat-card">
-          <div class="stat-value">$680K</div>
-          <div class="stat-label">Median apartment price</div>
+      <div class="city-nav" id="cityNav">
+        <button class="city-nav-btn active" onclick="showCity('tel-aviv',this)">Tel Aviv</button>
+        <button class="city-nav-btn" onclick="showCity('jerusalem',this)">Jerusalem</button>
+        <button class="city-nav-btn" onclick="showCity('netanya',this)">Netanya</button>
+        <button class="city-nav-btn" onclick="showCity('raanana',this)">Ra'anana</button>
+        <button class="city-nav-btn" onclick="showCity('herzliya',this)">Herzliya</button>
+        <button class="city-nav-btn" onclick="showCity('haifa',this)">Haifa</button>
+        <button class="city-nav-btn" onclick="showCity('beit-shemesh',this)">Beit Shemesh</button>
+        <button class="city-nav-btn" onclick="showCity('ashdod',this)">Ashdod</button>
+        <button class="city-nav-btn" onclick="showCity('ramat-gan',this)">Ramat Gan</button>
+      </div>
+
+      <!-- TEL AVIV -->
+      <div class="city-section active" id="city-tel-aviv">
+        <div class="city-stats" style="margin-top:0;">
+          <div class="stat-card"><div class="stat-value">$680K</div><div class="stat-label">Median apartment price</div></div>
+          <div class="stat-card"><div class="stat-value">3.2%</div><div class="stat-label">Average rental yield</div></div>
+          <div class="stat-card"><div class="stat-value">+7.4%</div><div class="stat-label">Annual price growth (5yr avg)</div></div>
+          <div class="stat-card"><div class="stat-value">460K</div><div class="stat-label">City population</div></div>
         </div>
-        <div class="stat-card">
-          <div class="stat-value">3.2%</div>
-          <div class="stat-label">Average rental yield</div>
+        <div style="margin-top:40px;">
+          <h2>Who Tel Aviv is right for</h2>
+          <p style="color:var(--charcoal-500);margin-top:12px;max-width:700px;">Tel Aviv suits buyers who want walkable urban living, proximity to tech and business hubs, vibrant nightlife and culture, and beach access. It's Israel's most expensive market, but it's also the most liquid — properties here hold value and resell relatively quickly. Best for: young professionals, dual-income families, second-home buyers who want energy, and long-term investors betting on continued demand.</p>
+          <h3 style="margin-top:48px;margin-bottom:8px;">Neighborhoods to know</h3>
+          <p style="color:var(--charcoal-500);margin-bottom:24px;">Each neighborhood in Tel Aviv has its own character, price point, and buyer profile.</p>
+          <div class="neighborhood-grid">
+            <div class="neighborhood-card"><h4>Neve Tzedek</h4><p class="neighborhood-vibe">Boutique, historic, premium</p><p style="font-size:0.9rem;color:var(--charcoal-500);">Tel Aviv's oldest neighborhood, now its most prestigious. Restored Ottoman-era buildings, designer boutiques, and top restaurants. Best for: design-minded buyers, premium second homes.</p></div>
+            <div class="neighborhood-card"><h4>Florentin</h4><p class="neighborhood-vibe">Creative, edgy, gentrifying</p><p style="font-size:0.9rem;color:var(--charcoal-500);">Street art, independent cafes, and a younger demographic. More affordable than central neighborhoods but rapidly appreciating. Best for: investors, young buyers, creative professionals.</p></div>
+            <div class="neighborhood-card"><h4>Lev Ha'ir (City Center)</h4><p class="neighborhood-vibe">Central, walkable, diverse</p><p style="font-size:0.9rem;color:var(--charcoal-500);">The beating heart of Tel Aviv — Rothschild Boulevard, Dizengoff, Bauhaus architecture. Mix of old and new buildings. Best for: buyers who want to be in the middle of everything.</p></div>
+            <div class="neighborhood-card"><h4>Old North</h4><p class="neighborhood-vibe">Residential, family-friendly, established</p><p style="font-size:0.9rem;color:var(--charcoal-500);">Quieter than the center but still walkable to the beach and park. Popular with families and expats. Good school proximity. Best for: families, long-term residents, lifestyle buyers.</p></div>
+            <div class="neighborhood-card"><h4>Sarona / Kaplan</h4><p class="neighborhood-vibe">Modern, towers, business district</p><p style="font-size:0.9rem;color:var(--charcoal-500);">New high-rise towers near the Azrieli center and Sarona market. Modern amenities, concierge buildings. Best for: professionals, investors in premium rental, buyers wanting new construction.</p></div>
+            <div class="neighborhood-card"><h4>Jaffa</h4><p class="neighborhood-vibe">Historic, artistic, mixed</p><p style="font-size:0.9rem;color:var(--charcoal-500);">Ancient port city merged with Tel Aviv. Galleries, flea markets, stunning sea views. A mix of restored old and bold new projects. Best for: character seekers, art lovers, unique property hunters.</p></div>
+          </div>
         </div>
-        <div class="stat-card">
-          <div class="stat-value">+7.4%</div>
-          <div class="stat-label">Annual price growth (5yr avg)</div>
+        <div style="margin-top:48px;padding:32px;background:var(--stone-100);border-radius:var(--r-lg);">
+          <h3>Practical buying notes</h3>
+          <p style="margin-top:12px;color:var(--charcoal-500);">Purchase tax for non-residents starts at 8% of property value. New developments typically price at a premium but may offer payment plans spread over 2-3 years of construction. Resale transactions move faster but require thorough legal and structural due diligence, especially in older Bauhaus-era buildings. Many buildings in central Tel Aviv are undergoing TAMA 38 seismic reinforcement, which can significantly affect value.</p>
         </div>
-        <div class="stat-card">
-          <div class="stat-value">460K</div>
-          <div class="stat-label">City population</div>
+        <div class="city-articles">
+          <h3>&#9997; Yuval's Tel Aviv insights</h3>
+          <div class="city-article-card"><div class="city-article-icon">&#127961;</div><div class="city-article-body"><h4>Why Tel Aviv Remains Israel's Safest Long-Term Real Estate Bet</h4><p>Tel Aviv's combination of tech-sector growth, limited land supply, and global brand recognition makes it the most resilient market in Israel. Even during downturns, Tel Aviv recovers faster than any other city.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 8 min read &middot; March 2026</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#128200;</div><div class="city-article-body"><h4>The TAMA 38 Effect: How Seismic Upgrades Are Reshaping Tel Aviv Values</h4><p>Buildings approved for TAMA 38 reinforcement can see 20-30% value increases — but timing and execution matter enormously. Here's what international buyers need to understand before purchasing in an eligible building.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 10 min read &middot; February 2026</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#127958;</div><div class="city-article-body"><h4>Florentin to Neve Tzedek: A Neighborhood-by-Neighborhood Investment Guide</h4><p>Each Tel Aviv neighborhood has a different risk-return profile. I break down which areas offer growth potential, which are fully priced, and where the next wave of gentrification is heading.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 12 min read &middot; January 2026</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#9992;</div><div class="city-article-body"><h4>Buying a Second Home in Tel Aviv: What Diaspora Buyers Get Wrong</h4><p>From underestimating Arnona costs to picking the wrong management company — the five most common mistakes I see international buyers make when purchasing a Tel Aviv pied-a-terre.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 7 min read &middot; December 2025</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#128197;</div><div class="city-article-body"><h4>New Construction vs. Resale in Tel Aviv: A 2026 Buyer's Framework</h4><p>Payment timelines, VAT implications, warranty coverage, and price trajectories — a side-by-side comparison to help you decide which route makes more sense for your situation.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 9 min read &middot; November 2025</span></div></div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <section class="section" style="padding-top:24px;">
-    <div class="container">
-      <h2>Who Tel Aviv is right for</h2>
-      <p style="color:var(--charcoal-500);margin-top:12px;max-width:700px;">Tel Aviv suits buyers who want walkable urban living, proximity to tech and business hubs, vibrant nightlife and culture, and beach access. It's Israel's most expensive market, but it's also the most liquid — properties here hold value and resell relatively quickly. Best for: young professionals, dual-income families, second-home buyers who want energy, and long-term investors betting on continued demand.</p>
-
-      <h3 style="margin-top:48px;margin-bottom:8px;">Neighborhoods to know</h3>
-      <p style="color:var(--charcoal-500);margin-bottom:24px;">Each neighborhood in Tel Aviv has its own character, price point, and buyer profile.</p>
-      <div class="neighborhood-grid">
-        <div class="neighborhood-card">
-          <h4>Neve Tzedek</h4>
-          <p class="neighborhood-vibe">Boutique, historic, premium</p>
-          <p style="font-size:0.9rem;color:var(--charcoal-500);">Tel Aviv's oldest neighborhood, now its most prestigious. Restored Ottoman-era buildings, designer boutiques, and top restaurants. Entry price is high, but character is unmatched. Best for: design-minded buyers, premium second homes.</p>
+      <!-- JERUSALEM -->
+      <div class="city-section" id="city-jerusalem">
+        <div class="city-stats" style="margin-top:0;">
+          <div class="stat-card"><div class="stat-value">$520K</div><div class="stat-label">Median apartment price</div></div>
+          <div class="stat-card"><div class="stat-value">3.8%</div><div class="stat-label">Average rental yield</div></div>
+          <div class="stat-card"><div class="stat-value">+6.1%</div><div class="stat-label">Annual price growth (5yr avg)</div></div>
+          <div class="stat-card"><div class="stat-value">980K</div><div class="stat-label">City population</div></div>
         </div>
-        <div class="neighborhood-card">
-          <h4>Florentin</h4>
-          <p class="neighborhood-vibe">Creative, edgy, gentrifying</p>
-          <p style="font-size:0.9rem;color:var(--charcoal-500);">Street art, independent cafes, and a younger demographic. More affordable than central neighborhoods but rapidly appreciating. Best for: investors, young buyers, creative professionals.</p>
+        <div style="margin-top:40px;">
+          <h2>Who Jerusalem is right for</h2>
+          <p style="color:var(--charcoal-500);margin-top:12px;max-width:700px;">Jerusalem attracts heritage-connected buyers, religious families, and investors targeting the diaspora rental market. It's a city of deep community ties, and real estate here often has emotional significance beyond pure financial return. Jerusalem leads Israel in foreign purchases — 44% of all non-resident apartment acquisitions happen here.</p>
+          <h3 style="margin-top:48px;margin-bottom:8px;">Neighborhoods to know</h3>
+          <div class="neighborhood-grid">
+            <div class="neighborhood-card"><h4>Rehavia</h4><p class="neighborhood-vibe">Prestigious, leafy, central</p><p style="font-size:0.9rem;color:var(--charcoal-500);">Jerusalem's most sought-after residential area. Tree-lined streets, proximity to the Old City, top schools. Consistently high demand from both locals and diaspora buyers.</p></div>
+            <div class="neighborhood-card"><h4>Talbiyeh</h4><p class="neighborhood-vibe">Elegant, quiet, diplomatic</p><p style="font-size:0.9rem;color:var(--charcoal-500);">Historic mansions and modern apartments near the Israel Museum. Popular with embassy staff and affluent families. Ultra-luxury segment growing rapidly.</p></div>
+            <div class="neighborhood-card"><h4>German Colony (Moshava)</h4><p class="neighborhood-vibe">Trendy, dining, family-friendly</p><p style="font-size:0.9rem;color:var(--charcoal-500);">Emek Refaim Street is Jerusalem's lifestyle hub. Cafes, shops, and a strong Anglo community. Good mix of historic charm and modern convenience.</p></div>
+            <div class="neighborhood-card"><h4>Arnona / Talpiot</h4><p class="neighborhood-vibe">Accessible, growing, value</p><p style="font-size:0.9rem;color:var(--charcoal-500);">More affordable entry point with excellent connectivity. New developments are transforming these areas. Best for: first-time buyers and investors seeking yield.</p></div>
+          </div>
         </div>
-        <div class="neighborhood-card">
-          <h4>Lev Ha'ir (City Center)</h4>
-          <p class="neighborhood-vibe">Central, walkable, diverse</p>
-          <p style="font-size:0.9rem;color:var(--charcoal-500);">The beating heart of Tel Aviv — Rothschild Boulevard, Dizengoff, Bauhaus architecture. Mix of old and new buildings. Best for: buyers who want to be in the middle of everything.</p>
+        <div style="margin-top:48px;padding:32px;background:var(--stone-100);border-radius:var(--r-lg);">
+          <h3>Practical buying notes</h3>
+          <p style="margin-top:12px;color:var(--charcoal-500);">Jerusalem has seen a surge in organized diaspora investment groups buying entire buildings. Foreign resident purchase tax is 8-10%. The city offers strong rental demand from students, young professionals, and short-term visitors. Many newer projects in areas like Arnona offer modern specifications at lower price points than central neighborhoods.</p>
         </div>
-        <div class="neighborhood-card">
-          <h4>Old North</h4>
-          <p class="neighborhood-vibe">Residential, family-friendly, established</p>
-          <p style="font-size:0.9rem;color:var(--charcoal-500);">Quieter than the center but still walkable to the beach and park. Popular with families and expats. Good school proximity. Best for: families, long-term residents, lifestyle buyers.</p>
-        </div>
-        <div class="neighborhood-card">
-          <h4>Sarona / Kaplan</h4>
-          <p class="neighborhood-vibe">Modern, towers, business district</p>
-          <p style="font-size:0.9rem;color:var(--charcoal-500);">New high-rise towers near the Azrieli center and Sarona market. Modern amenities, concierge buildings. Best for: professionals, investors in premium rental, buyers wanting new construction.</p>
-        </div>
-        <div class="neighborhood-card">
-          <h4>Jaffa</h4>
-          <p class="neighborhood-vibe">Historic, artistic, mixed</p>
-          <p style="font-size:0.9rem;color:var(--charcoal-500);">Ancient port city merged with Tel Aviv. Galleries, flea markets, stunning sea views. A mix of restored old and bold new projects. Best for: character seekers, art lovers, unique property hunters.</p>
+        <div class="city-articles">
+          <h3>&#9997; Yuval's Jerusalem insights</h3>
+          <div class="city-article-card"><div class="city-article-icon">&#127963;</div><div class="city-article-body"><h4>Why Diaspora Buyers Are Pouring Into Jerusalem Real Estate</h4><p>Jerusalem has become the top destination for foreign Jewish investment in Israel. I explain the forces driving this trend — from community ties to pure financial opportunity — and what it means for buyers entering the market now.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 9 min read &middot; March 2026</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#128176;</div><div class="city-article-body"><h4>Jerusalem's Ultra-Luxury Boom: What $3M+ Buys You in 2026</h4><p>The NIS 10-25 million segment is exploding in Jerusalem's premium neighborhoods. From Talbiyeh villas to Mamilla penthouses, here's what's driving the top end of the market.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 8 min read &middot; February 2026</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#127969;</div><div class="city-article-body"><h4>Rental Investment in Jerusalem: Student Housing vs. Short-Term Stays</h4><p>Jerusalem offers two distinct rental strategies — long-term student/professional lets and short-term holiday accommodation. Each has different yield profiles, regulatory requirements, and management demands.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 11 min read &middot; January 2026</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#128205;</div><div class="city-article-body"><h4>German Colony vs. Rehavia vs. Baka: Where Should You Buy?</h4><p>Three of Jerusalem's most popular Anglo-friendly neighborhoods compared on price, community, walkability, schools, and long-term appreciation potential.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 10 min read &middot; December 2025</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#128218;</div><div class="city-article-body"><h4>The Complete Guide to Buying in Jerusalem as a Non-Resident</h4><p>Everything from tax implications and legal representation to choosing between old stone and new construction. A comprehensive starting point for international buyers considering Jerusalem.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 14 min read &middot; November 2025</span></div></div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <section class="section section-alt">
-    <div class="container" style="max-width:760px;">
-      <h2>Practical buying notes for Tel Aviv</h2>
-      <p style="margin-top:16px;color:var(--charcoal-500);">Purchase tax for non-residents starts at 8% of the property value. New developments in Tel Aviv typically price at a premium but may offer payment plans spread over 2–3 years of construction. Resale transactions move faster but require thorough legal and structural due diligence, especially in older Bauhaus-era buildings. Arnona (municipal tax) varies by neighborhood and apartment size. Many buildings in central Tel Aviv are undergoing TAMA 38 seismic reinforcement, which can significantly affect value — positively or negatively depending on timing and execution.</p>
+      <!-- NETANYA -->
+      <div class="city-section" id="city-netanya">
+        <div class="city-stats" style="margin-top:0;">
+          <div class="stat-card"><div class="stat-value">$320K</div><div class="stat-label">Median apartment price</div></div>
+          <div class="stat-card"><div class="stat-value">4.1%</div><div class="stat-label">Average rental yield</div></div>
+          <div class="stat-card"><div class="stat-value">+5.8%</div><div class="stat-label">Annual price growth (5yr avg)</div></div>
+          <div class="stat-card"><div class="stat-value">230K</div><div class="stat-label">City population</div></div>
+        </div>
+        <div style="margin-top:40px;">
+          <h2>Who Netanya is right for</h2>
+          <p style="color:var(--charcoal-500);margin-top:12px;max-width:700px;">Netanya is Israel's most popular destination for Anglo and French-speaking buyers seeking beachfront living at accessible prices. The city has a large, established English-speaking community and a relaxed coastal vibe that appeals to retirees, families, and investors looking for better yields than Tel Aviv offers.</p>
+          <h3 style="margin-top:48px;margin-bottom:8px;">Neighborhoods to know</h3>
+          <div class="neighborhood-grid">
+            <div class="neighborhood-card"><h4>South Beach (Ir Yamim)</h4><p class="neighborhood-vibe">Premium beachfront, modern</p><p style="font-size:0.9rem;color:var(--charcoal-500);">Netanya's most upscale area with new high-rise towers and direct beach access. Strong demand from international buyers. Best for: premium coastal living, second homes.</p></div>
+            <div class="neighborhood-card"><h4>City Center</h4><p class="neighborhood-vibe">Walkable, affordable, renewing</p><p style="font-size:0.9rem;color:var(--charcoal-500);">Close to the cliff promenade and main shopping areas. Older buildings offer entry-level prices with urban renewal potential. Best for: investors, first-time buyers.</p></div>
+            <div class="neighborhood-card"><h4>Poleg</h4><p class="neighborhood-vibe">Family-friendly, new builds</p><p style="font-size:0.9rem;color:var(--charcoal-500);">Southern Netanya's growth hub with new schools, shopping centers, and residential developments. Best for: families making aliyah who want modern infrastructure.</p></div>
+          </div>
+        </div>
+        <div style="margin-top:48px;padding:32px;background:var(--stone-100);border-radius:var(--r-lg);">
+          <h3>Practical buying notes</h3>
+          <p style="margin-top:12px;color:var(--charcoal-500);">Netanya offers significantly lower entry prices than Tel Aviv (30 minutes by train). Many new beachfront developments target international buyers with payment plans and English-language sales. The city's ongoing cliff stabilization and promenade projects are boosting coastal property values. Strong Anglo community means English-speaking services are readily available.</p>
+        </div>
+        <div class="city-articles">
+          <h3>&#9997; Yuval's Netanya insights</h3>
+          <div class="city-article-card"><div class="city-article-icon">&#127754;</div><div class="city-article-body"><h4>Netanya's Beachfront Revival: Why International Buyers Are Taking Notice</h4><p>Massive infrastructure investment, new high-rises, and a growing Anglo community are transforming Netanya from a quiet coastal town into a serious real estate destination.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 8 min read &middot; March 2026</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#128200;</div><div class="city-article-body"><h4>Netanya vs. Tel Aviv: The Value Gap That Smart Buyers Are Exploiting</h4><p>With prices 50-60% lower and only 30 minutes by train from Tel Aviv, Netanya offers compelling value. But the markets serve different buyers — here's how to know which is right for you.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 9 min read &middot; February 2026</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#127758;</div><div class="city-article-body"><h4>The Anglo Community Factor: Living in Netanya as an English Speaker</h4><p>How the established English-speaking community in Netanya makes the transition easier for North American and British buyers — from schools and synagogues to medical care and social life.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 7 min read &middot; January 2026</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#128176;</div><div class="city-article-body"><h4>Rental Returns in Netanya: Where the Numbers Actually Work</h4><p>Netanya's rental yields outperform Tel Aviv and Jerusalem. I analyze the best neighborhoods for rental investment and the tenant profiles driving demand.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 10 min read &middot; December 2025</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#127959;</div><div class="city-article-body"><h4>New Development Spotlight: The 5 Best Projects in Netanya Right Now</h4><p>A curated look at the new construction projects I'd recommend to clients — evaluated on location, developer track record, price per meter, and delivery timeline.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 11 min read &middot; November 2025</span></div></div>
+        </div>
+      </div>
+
+      <!-- RA'ANANA -->
+      <div class="city-section" id="city-raanana">
+        <div class="city-stats" style="margin-top:0;">
+          <div class="stat-card"><div class="stat-value">$550K</div><div class="stat-label">Median apartment price</div></div>
+          <div class="stat-card"><div class="stat-value">3.0%</div><div class="stat-label">Average rental yield</div></div>
+          <div class="stat-card"><div class="stat-value">+6.5%</div><div class="stat-label">Annual price growth (5yr avg)</div></div>
+          <div class="stat-card"><div class="stat-value">155K</div><div class="stat-label">City population</div></div>
+        </div>
+        <div style="margin-top:40px;">
+          <h2>Who Ra'anana is right for</h2>
+          <p style="color:var(--charcoal-500);margin-top:12px;max-width:700px;">Ra'anana is Israel's premier suburban family destination for English-speaking immigrants. Top-rated schools, beautiful parks, a thriving Anglo community, and easy access to the Tel Aviv metro area make it the default choice for many families making aliyah from North America and the UK.</p>
+          <h3 style="margin-top:48px;margin-bottom:8px;">Neighborhoods to know</h3>
+          <div class="neighborhood-grid">
+            <div class="neighborhood-card"><h4>North Ra'anana</h4><p class="neighborhood-vibe">Premium, villas, established</p><p style="font-size:0.9rem;color:var(--charcoal-500);">Spacious homes, tree-lined streets, and proximity to the city park. The most desirable area for families with larger budgets. Best for: families wanting space and community.</p></div>
+            <div class="neighborhood-card"><h4>New Ra'anana (South)</h4><p class="neighborhood-vibe">Modern, towers, walkable</p><p style="font-size:0.9rem;color:var(--charcoal-500);">Newer high-rise developments with modern amenities, close to the train station and commercial centers. Best for: young families and professionals wanting convenience.</p></div>
+            <div class="neighborhood-card"><h4>City Center</h4><p class="neighborhood-vibe">Lively, restaurants, compact</p><p style="font-size:0.9rem;color:var(--charcoal-500);">Ahuza Street is the main artery — cafes, shops, and community life. Older buildings at more accessible prices. Best for: buyers wanting walkable urban convenience.</p></div>
+          </div>
+        </div>
+        <div style="margin-top:48px;padding:32px;background:var(--stone-100);border-radius:var(--r-lg);">
+          <h3>Practical buying notes</h3>
+          <p style="margin-top:12px;color:var(--charcoal-500);">Ra'anana commands a premium for its school system and community infrastructure. Properties here tend to hold value exceptionally well. The city is connected to Tel Aviv by train (20 min) and Highway 531. Demand from olim consistently outpaces supply, particularly for 4-5 bedroom family apartments and cottages.</p>
+        </div>
+        <div class="city-articles">
+          <h3>&#9997; Yuval's Ra'anana insights</h3>
+          <div class="city-article-card"><div class="city-article-icon">&#127979;</div><div class="city-article-body"><h4>Why Ra'anana Is the #1 Choice for Families Making Aliyah</h4><p>Schools, parks, community, and proximity to Tel Aviv — I explain why Ra'anana consistently tops the list for Anglo families moving to Israel, and what to expect from the property market.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 8 min read &middot; March 2026</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#128200;</div><div class="city-article-body"><h4>Ra'anana Property Prices: Understanding the Premium</h4><p>Ra'anana isn't cheap — but the premium reflects genuine quality-of-life factors. I break down exactly what you're paying for and whether the numbers make sense for different buyer profiles.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 9 min read &middot; February 2026</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#127969;</div><div class="city-article-body"><h4>Cottage vs. Apartment in Ra'anana: The Family Buyer's Dilemma</h4><p>Detached cottages offer space but cost more and require maintenance. Apartments in newer towers offer amenities and lower entry prices. Here's a practical framework for making this decision.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 7 min read &middot; January 2026</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#128205;</div><div class="city-article-body"><h4>North vs. South Ra'anana: A Detailed Neighborhood Comparison</h4><p>Two different vibes, two different price points. I compare the established north with the modern south to help you decide which side of the city matches your family's needs.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 10 min read &middot; December 2025</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#128218;</div><div class="city-article-body"><h4>Buying Before Aliyah: The Ra'anana Strategy Guide</h4><p>Many families buy in Ra'anana months before their move. I walk through the timeline, the financial considerations, and the practical steps to secure a home before you arrive.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 12 min read &middot; November 2025</span></div></div>
+        </div>
+      </div>
+
+      <!-- HERZLIYA -->
+      <div class="city-section" id="city-herzliya">
+        <div class="city-stats" style="margin-top:0;">
+          <div class="stat-card"><div class="stat-value">$620K</div><div class="stat-label">Median apartment price</div></div>
+          <div class="stat-card"><div class="stat-value">3.0%</div><div class="stat-label">Average rental yield</div></div>
+          <div class="stat-card"><div class="stat-value">+6.8%</div><div class="stat-label">Annual price growth (5yr avg)</div></div>
+          <div class="stat-card"><div class="stat-value">100K</div><div class="stat-label">City population</div></div>
+        </div>
+        <div style="margin-top:40px;">
+          <h2>Who Herzliya is right for</h2>
+          <p style="color:var(--charcoal-500);margin-top:12px;max-width:700px;">Herzliya is where Israel's tech elite and premium coastal buyers converge. The Herzliya Pituach marina district is one of the country's most prestigious addresses. Further east, Herzliya offers excellent suburban living with easy access to Tel Aviv. Best for: tech professionals, premium second-home buyers, and investors targeting the high-end rental market.</p>
+          <h3 style="margin-top:48px;margin-bottom:8px;">Neighborhoods to know</h3>
+          <div class="neighborhood-grid">
+            <div class="neighborhood-card"><h4>Herzliya Pituach</h4><p class="neighborhood-vibe">Premium, marina, tech hub</p><p style="font-size:0.9rem;color:var(--charcoal-500);">Israel's most expensive residential area outside central Tel Aviv. Beachfront villas, the Arena mall, and proximity to Herzliya's tech park. Ultra-premium pricing.</p></div>
+            <div class="neighborhood-card"><h4>Herzliya Hills</h4><p class="neighborhood-vibe">Residential, green, family</p><p style="font-size:0.9rem;color:var(--charcoal-500);">Newer developments with a suburban feel, parks, and good schools. More accessible than Pituach while maintaining a high quality of life. Best for: families and professionals.</p></div>
+            <div class="neighborhood-card"><h4>City Center</h4><p class="neighborhood-vibe">Affordable, urban renewal</p><p style="font-size:0.9rem;color:var(--charcoal-500);">Older buildings undergoing renewal. Walking distance to shops and transit. Entry-level prices for the Herzliya market. Best for: investors and young professionals.</p></div>
+          </div>
+        </div>
+        <div style="margin-top:48px;padding:32px;background:var(--stone-100);border-radius:var(--r-lg);">
+          <h3>Practical buying notes</h3>
+          <p style="margin-top:12px;color:var(--charcoal-500);">Herzliya Pituach properties command prices comparable to north Tel Aviv, with some beachfront villas exceeding NIS 30 million. The tech park ensures strong rental demand for executive housing. Herzliya's municipal services and infrastructure are among Israel's best-rated.</p>
+        </div>
+        <div class="city-articles">
+          <h3>&#9997; Yuval's Herzliya insights</h3>
+          <div class="city-article-card"><div class="city-article-icon">&#9875;</div><div class="city-article-body"><h4>Herzliya Pituach: Is Israel's Premier Address Worth the Premium?</h4><p>Marina living, beach access, and tech-hub proximity come at a price. I analyze whether Pituach's premium translates to strong long-term value or if you're paying primarily for lifestyle.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 9 min read &middot; March 2026</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#128187;</div><div class="city-article-body"><h4>The Tech Effect: How Herzliya's Start-Up Ecosystem Drives Property Demand</h4><p>Herzliya's tech park employs thousands of well-paid professionals who need housing. I explain how this creates a uniquely strong rental market and stable appreciation.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 8 min read &middot; February 2026</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#127961;</div><div class="city-article-body"><h4>Executive Rental Properties in Herzliya: A Yield Analysis</h4><p>High-end furnished rentals near the tech park can generate premium returns. I walk through the numbers, the tenant profile, and the management requirements.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 10 min read &middot; January 2026</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#128205;</div><div class="city-article-body"><h4>Herzliya vs. North Tel Aviv: Which Coastal Market Fits Better?</h4><p>Both offer premium coastal living, but the lifestyles are different. I compare the two on price, character, appreciation trajectory, and day-to-day living experience.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 7 min read &middot; December 2025</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#127959;</div><div class="city-article-body"><h4>New Developments in Herzliya: What's Coming in 2026-2028</h4><p>Several major new projects are launching in Herzliya. I review the most promising ones, their target buyers, and whether pre-sale pricing represents genuine value.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 11 min read &middot; November 2025</span></div></div>
+        </div>
+      </div>
+
+      <!-- HAIFA -->
+      <div class="city-section" id="city-haifa">
+        <div class="city-stats" style="margin-top:0;">
+          <div class="stat-card"><div class="stat-value">$250K</div><div class="stat-label">Median apartment price</div></div>
+          <div class="stat-card"><div class="stat-value">5.2%</div><div class="stat-label">Average rental yield</div></div>
+          <div class="stat-card"><div class="stat-value">+4.8%</div><div class="stat-label">Annual price growth (5yr avg)</div></div>
+          <div class="stat-card"><div class="stat-value">285K</div><div class="stat-label">City population</div></div>
+        </div>
+        <div style="margin-top:40px;">
+          <h2>Who Haifa is right for</h2>
+          <p style="color:var(--charcoal-500);margin-top:12px;max-width:700px;">Haifa offers Israel's best combination of yield and affordability. It's a university city with diverse culture, mountain-sea views, and a genuine urban renewal story. Best for: yield-focused investors, buyers who want value, students and academics, and anyone drawn to Haifa's unique character — a city that doesn't try to be Tel Aviv.</p>
+          <h3 style="margin-top:48px;margin-bottom:8px;">Neighborhoods to know</h3>
+          <div class="neighborhood-grid">
+            <div class="neighborhood-card"><h4>Carmel Center</h4><p class="neighborhood-vibe">Scenic, established, panoramic</p><p style="font-size:0.9rem;color:var(--charcoal-500);">Haifa's premium hilltop area with stunning bay views. Restaurants, cultural venues, and Baha'i Gardens proximity. Best for: lifestyle buyers who want Haifa's best address.</p></div>
+            <div class="neighborhood-card"><h4>German Colony (HaMoshava)</h4><p class="neighborhood-vibe">Renovated, trendy, growing</p><p style="font-size:0.9rem;color:var(--charcoal-500);">Ben Gurion Boulevard is Haifa's cafe and restaurant strip. Restored Templar-era buildings alongside new projects. Strong appreciation trajectory.</p></div>
+            <div class="neighborhood-card"><h4>Hadar</h4><p class="neighborhood-vibe">Affordable, student-heavy, reviving</p><p style="font-size:0.9rem;color:var(--charcoal-500);">Haifa's most affordable central area. Strong rental demand from Technion and university students. Urban renewal is accelerating. Best for: yield-focused investors.</p></div>
+          </div>
+        </div>
+        <div style="margin-top:48px;padding:32px;background:var(--stone-100);border-radius:var(--r-lg);">
+          <h3>Practical buying notes</h3>
+          <p style="margin-top:12px;color:var(--charcoal-500);">Haifa offers the highest rental yields of any major Israeli city. The Technion and University of Haifa create consistent student rental demand. New infrastructure projects including the cable car and port redevelopment are boosting the city's appeal. Entry prices are 60-70% below Tel Aviv for comparable quality.</p>
+        </div>
+        <div class="city-articles">
+          <h3>&#9997; Yuval's Haifa insights</h3>
+          <div class="city-article-card"><div class="city-article-icon">&#128200;</div><div class="city-article-body"><h4>Haifa's 5.2% Yields: Why Smart Investors Are Looking North</h4><p>While Tel Aviv and Jerusalem grab headlines, Haifa quietly delivers Israel's best rental returns. I break down the numbers and explain which neighborhoods offer the strongest yield profiles.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 10 min read &middot; March 2026</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#127963;</div><div class="city-article-body"><h4>Haifa's Urban Renaissance: The Neighborhoods to Watch</h4><p>Infrastructure investment, tech sector growth, and cultural revival are transforming Haifa. I identify the areas where early buyers stand to benefit most from the city's ongoing transformation.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 9 min read &middot; February 2026</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#127891;</div><div class="city-article-body"><h4>Student Housing in Haifa: A Low-Entry, High-Yield Investment Strategy</h4><p>With two major universities, Haifa's student housing market offers consistent demand and attractive returns. Here's how to structure a student rental investment properly.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 8 min read &middot; January 2026</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#9968;</div><div class="city-article-body"><h4>Mountain-to-Sea Living: What Makes Haifa's Lifestyle Unique in Israel</h4><p>Haifa offers something no other Israeli city can — dramatic topography, cooler weather, genuine diversity, and a pace of life that lets you actually breathe. Here's what living here feels like.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 7 min read &middot; December 2025</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#128176;</div><div class="city-article-body"><h4>Buying in Haifa From Abroad: A Practical Step-by-Step Guide</h4><p>Lower prices make Haifa accessible, but remote purchasing has its own challenges. I walk through the entire process, from property search to key handover, for international buyers.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 12 min read &middot; November 2025</span></div></div>
+        </div>
+      </div>
+
+      <!-- BEIT SHEMESH -->
+      <div class="city-section" id="city-beit-shemesh">
+        <div class="city-stats" style="margin-top:0;">
+          <div class="stat-card"><div class="stat-value">$350K</div><div class="stat-label">Median apartment price</div></div>
+          <div class="stat-card"><div class="stat-value">4.0%</div><div class="stat-label">Average rental yield</div></div>
+          <div class="stat-card"><div class="stat-value">+7.2%</div><div class="stat-label">Annual price growth (5yr avg)</div></div>
+          <div class="stat-card"><div class="stat-value">160K</div><div class="stat-label">City population</div></div>
+        </div>
+        <div style="margin-top:40px;">
+          <h2>Who Beit Shemesh is right for</h2>
+          <p style="color:var(--charcoal-500);margin-top:12px;max-width:700px;">Beit Shemesh has become Israel's fastest-growing Anglo religious community. The city's newer neighborhoods — Ramat Beit Shemesh Aleph, Bet, Gimmel — are designed communities with synagogues, schools, and infrastructure built for religious family life. It's one of the few places in Israel where you can buy new construction at reasonable prices with a ready-made community waiting.</p>
+          <h3 style="margin-top:48px;margin-bottom:8px;">Neighborhoods to know</h3>
+          <div class="neighborhood-grid">
+            <div class="neighborhood-card"><h4>Ramat Beit Shemesh Aleph</h4><p class="neighborhood-vibe">Established Anglo, religious</p><p style="font-size:0.9rem;color:var(--charcoal-500);">The original Anglo neighborhood with the most established community. English widely spoken, familiar institutions, and proven property values.</p></div>
+            <div class="neighborhood-card"><h4>RBS Gimmel / Daled</h4><p class="neighborhood-vibe">New builds, modern, growing</p><p style="font-size:0.9rem;color:var(--charcoal-500);">Newest development areas with modern apartments at the most competitive prices. Growing communities but still developing infrastructure.</p></div>
+            <div class="neighborhood-card"><h4>Old Beit Shemesh</h4><p class="neighborhood-vibe">Affordable, diverse, urban</p><p style="font-size:0.9rem;color:var(--charcoal-500);">The original city center. More diverse and affordable, with good transit connections. Urban renewal projects are gradually transforming the area.</p></div>
+          </div>
+        </div>
+        <div style="margin-top:48px;padding:32px;background:var(--stone-100);border-radius:var(--r-lg);">
+          <h3>Practical buying notes</h3>
+          <p style="margin-top:12px;color:var(--charcoal-500);">Beit Shemesh offers excellent value compared to Jerusalem (20 min by train). New construction is plentiful with multiple developers competing. The city's rapid growth means infrastructure sometimes lags behind development — verify school capacity and transit plans before committing to newer neighborhoods.</p>
+        </div>
+        <div class="city-articles">
+          <h3>&#9997; Yuval's Beit Shemesh insights</h3>
+          <div class="city-article-card"><div class="city-article-icon">&#127969;</div><div class="city-article-body"><h4>Beit Shemesh: The Anglo Community That Built Itself</h4><p>How English-speaking immigrants transformed a small Israeli city into one of the country's most vibrant religious communities — and what that means for property values.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 8 min read &middot; March 2026</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#128200;</div><div class="city-article-body"><h4>RBS Aleph vs. Gimmel vs. Daled: Where to Buy in Ramat Beit Shemesh</h4><p>Three neighborhoods at different stages of development, with different price points and community profiles. I compare them for families considering the move.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 10 min read &middot; February 2026</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#128197;</div><div class="city-article-body"><h4>Buying Pre-Sale in Beit Shemesh: Opportunities and Risks</h4><p>New construction dominates the Beit Shemesh market. I explain the pre-sale process, payment schedules, developer track records, and what to watch out for.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 9 min read &middot; January 2026</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#128646;</div><div class="city-article-body"><h4>The Jerusalem-Beit Shemesh Corridor: Commute, Connectivity, and Value</h4><p>Many buyers choose Beit Shemesh for Jerusalem-area living at lower prices. I examine the commute reality, transportation improvements, and the price gap between the two cities.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 7 min read &middot; December 2025</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#127979;</div><div class="city-article-body"><h4>Schools, Shuls, and Community: The Complete Family Relocation Guide to Beit Shemesh</h4><p>Beyond the property purchase — everything a religious family needs to know about settling in Beit Shemesh, from school systems to community integration.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 13 min read &middot; November 2025</span></div></div>
+        </div>
+      </div>
+
+      <!-- ASHDOD -->
+      <div class="city-section" id="city-ashdod">
+        <div class="city-stats" style="margin-top:0;">
+          <div class="stat-card"><div class="stat-value">$280K</div><div class="stat-label">Median apartment price</div></div>
+          <div class="stat-card"><div class="stat-value">4.5%</div><div class="stat-label">Average rental yield</div></div>
+          <div class="stat-card"><div class="stat-value">+5.5%</div><div class="stat-label">Annual price growth (5yr avg)</div></div>
+          <div class="stat-card"><div class="stat-value">250K</div><div class="stat-label">City population</div></div>
+        </div>
+        <div style="margin-top:40px;">
+          <h2>Who Ashdod is right for</h2>
+          <p style="color:var(--charcoal-500);margin-top:12px;max-width:700px;">Ashdod is Israel's sixth-largest city and a growing coastal destination, particularly popular with French-speaking immigrants. It offers beachfront living at significantly lower prices than Netanya or Tel Aviv, with modern city infrastructure and improving cultural amenities. Best for: affordable coastal living, French-speaking community ties, and yield-focused investment.</p>
+          <h3 style="margin-top:48px;margin-bottom:8px;">Neighborhoods to know</h3>
+          <div class="neighborhood-grid">
+            <div class="neighborhood-card"><h4>City (Yud-Zayin)</h4><p class="neighborhood-vibe">New, beachfront, premium</p><p style="font-size:0.9rem;color:var(--charcoal-500);">Ashdod's newest waterfront neighborhood with modern towers and sea views. The city's premium residential area with new commercial centers.</p></div>
+            <div class="neighborhood-card"><h4>Marina Area</h4><p class="neighborhood-vibe">Recreational, modern</p><p style="font-size:0.9rem;color:var(--charcoal-500);">Near the port and marina with restaurants and entertainment. Growing appeal among younger buyers and investors. Strong rental potential.</p></div>
+            <div class="neighborhood-card"><h4>Older Neighborhoods (Aleph-Daled)</h4><p class="neighborhood-vibe">Affordable, renewal potential</p><p style="font-size:0.9rem;color:var(--charcoal-500);">Entry-level pricing with urban renewal upside. Some buildings are undergoing TAMA 38 reinforcement. Best for: budget investors seeking appreciation.</p></div>
+          </div>
+        </div>
+        <div style="margin-top:48px;padding:32px;background:var(--stone-100);border-radius:var(--r-lg);">
+          <h3>Practical buying notes</h3>
+          <p style="margin-top:12px;color:var(--charcoal-500);">Ashdod is connected to Tel Aviv by train (35 min) and has Israel's largest port driving economic growth. The French-speaking community provides a strong social network for francophone buyers. New beachfront developments offer modern living at 40-50% below comparable Netanya or Tel Aviv prices.</p>
+        </div>
+        <div class="city-articles">
+          <h3>&#9997; Yuval's Ashdod insights</h3>
+          <div class="city-article-card"><div class="city-article-icon">&#127754;</div><div class="city-article-body"><h4>Ashdod's Beachfront at Half the Price: The Opportunity No One Talks About</h4><p>While buyers flock to Tel Aviv and Netanya, Ashdod offers comparable beachfront living at dramatically lower prices. I make the case for why this city deserves serious attention.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 8 min read &middot; March 2026</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#127758;</div><div class="city-article-body"><h4>The French Connection: Why Francophone Buyers Choose Ashdod</h4><p>Ashdod's large French-speaking community creates a unique social ecosystem. I explore how this community infrastructure benefits international buyers and what it means for the property market.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 7 min read &middot; February 2026</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#128200;</div><div class="city-article-body"><h4>Ashdod Rental Yields: Outperforming the Big Cities</h4><p>Strong demand, lower purchase prices, and growing infrastructure make Ashdod a yield investor's playground. I analyze the best areas and property types for rental returns.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 9 min read &middot; January 2026</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#127959;</div><div class="city-article-body"><h4>New vs. Old Ashdod: Where the Smart Money Is Going</h4><p>New beachfront towers vs. urban renewal in older neighborhoods — two different investment strategies in the same city. I compare the risk-return profiles.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 10 min read &middot; December 2025</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#128646;</div><div class="city-article-body"><h4>The Port City Advantage: How Ashdod's Economy Supports Its Property Market</h4><p>Israel's largest port, growing industrial zones, and expanding commercial areas create diverse employment — and diverse rental demand. Here's why that matters for property investors.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 8 min read &middot; November 2025</span></div></div>
+        </div>
+      </div>
+
+      <!-- RAMAT GAN -->
+      <div class="city-section" id="city-ramat-gan">
+        <div class="city-stats" style="margin-top:0;">
+          <div class="stat-card"><div class="stat-value">$480K</div><div class="stat-label">Median apartment price</div></div>
+          <div class="stat-card"><div class="stat-value">3.5%</div><div class="stat-label">Average rental yield</div></div>
+          <div class="stat-card"><div class="stat-value">+6.2%</div><div class="stat-label">Annual price growth (5yr avg)</div></div>
+          <div class="stat-card"><div class="stat-value">165K</div><div class="stat-label">City population</div></div>
+        </div>
+        <div style="margin-top:40px;">
+          <h2>Who Ramat Gan is right for</h2>
+          <p style="color:var(--charcoal-500);margin-top:12px;max-width:700px;">Ramat Gan is Tel Aviv's savvy neighbor — offering comparable urban energy at significantly lower prices. Home to the Diamond Exchange, Bar-Ilan University, the national stadium, and Safari park, it has its own strong identity while being essentially integrated with greater Tel Aviv. Best for: buyers who want Tel Aviv-area living without Tel Aviv prices, investors betting on continued urban renewal.</p>
+          <h3 style="margin-top:48px;margin-bottom:8px;">Neighborhoods to know</h3>
+          <div class="neighborhood-grid">
+            <div class="neighborhood-card"><h4>Diamond Exchange Area</h4><p class="neighborhood-vibe">Towers, business, modern</p><p style="font-size:0.9rem;color:var(--charcoal-500);">Israel's tallest buildings and a major business hub. Luxury high-rises with views of Tel Aviv. Strong demand from professionals and executives.</p></div>
+            <div class="neighborhood-card"><h4>City Center</h4><p class="neighborhood-vibe">Renewing, accessible, diverse</p><p style="font-size:0.9rem;color:var(--charcoal-500);">Older buildings with active urban renewal (pinui-binui) projects. Walkable to parks and commercial areas. Significant appreciation potential as projects complete.</p></div>
+            <div class="neighborhood-card"><h4>Kiryat Krinitzi</h4><p class="neighborhood-vibe">Residential, quiet, family</p><p style="font-size:0.9rem;color:var(--charcoal-500);">Peaceful residential area near the Safari park. Lower density, more green space. Good value for families wanting a quieter setting within greater Tel Aviv.</p></div>
+          </div>
+        </div>
+        <div style="margin-top:48px;padding:32px;background:var(--stone-100);border-radius:var(--r-lg);">
+          <h3>Practical buying notes</h3>
+          <p style="margin-top:12px;color:var(--charcoal-500);">Ramat Gan is undergoing massive urban renewal with dozens of pinui-binui projects replacing old buildings with modern towers. This creates both opportunity (buying pre-renewal for appreciation) and risk (construction disruption, timeline uncertainty). The Diamond Exchange area is Israel's emerging premium high-rise district with some of the country's tallest residential towers.</p>
+        </div>
+        <div class="city-articles">
+          <h3>&#9997; Yuval's Ramat Gan insights</h3>
+          <div class="city-article-card"><div class="city-article-icon">&#128142;</div><div class="city-article-body"><h4>Ramat Gan: Tel Aviv Living at a 30% Discount</h4><p>Ramat Gan delivers much of what Tel Aviv offers — culture, transit, energy — at significantly lower prices. I explain the value proposition and which areas offer the best entry points.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 8 min read &middot; March 2026</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#127959;</div><div class="city-article-body"><h4>The Pinui-Binui Revolution: How Urban Renewal Is Transforming Ramat Gan</h4><p>Hundreds of old buildings are being replaced with modern towers across Ramat Gan. I explain how these projects work, the timeline, and whether buying pre-renewal makes financial sense.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 11 min read &middot; February 2026</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#128200;</div><div class="city-article-body"><h4>Diamond Exchange Towers: Investing in Israel's New Skyline</h4><p>The area around the Diamond Exchange is becoming a premium residential district. I review the newest tower projects, their target market, and the investment thesis behind buying here.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 9 min read &middot; January 2026</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#128205;</div><div class="city-article-body"><h4>Ramat Gan vs. Givatayim vs. Tel Aviv: A Central Region Comparison</h4><p>Three neighboring cities, three different price points, three different characters. I compare them for international buyers trying to decide where to plant their flag in the Tel Aviv metro area.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 10 min read &middot; December 2025</span></div></div>
+          <div class="city-article-card"><div class="city-article-icon">&#128176;</div><div class="city-article-body"><h4>Buying Before the Cranes Arrive: A Guide to Pre-Renewal Investment in Ramat Gan</h4><p>The biggest gains in Ramat Gan go to buyers who get in before urban renewal projects begin. I explain how to identify promising buildings, assess timelines, and manage the risks.</p><span class="city-article-meta">By Yuval Rindsberger &middot; 12 min read &middot; November 2025</span></div></div>
+        </div>
+      </div>
+
+      <!-- NEWS SECTION (shared across all cities) -->
+      <div class="news-section">
+        <h3>&#128240; In the news: Foreign investment in Israel real estate</h3>
+        <p style="color:var(--charcoal-500);margin-bottom:24px;font-size:0.938rem;">Recent coverage from Israeli and international media on diaspora and foreign investment trends.</p>
+        <div class="news-card">
+          <span class="news-source">Times of Israel</span>
+          <div><h4>American Jews buy two full apartment buildings in Jerusalem</h4><p>A Brooklyn-based company purchased two residential towers in central Jerusalem — 200 luxury apartments for approximately $270 million, targeting the Syrian Jewish community abroad.</p><div class="news-date">2025</div></div>
+        </div>
+        <div class="news-card">
+          <span class="news-source">Haaretz</span>
+          <div><h4>Syrian American Jews invest over $250M in Jerusalem real estate</h4><p>Growing trend of organized diaspora investment in Israel's capital, with community-based purchasing groups operating as coordinated buyers rather than individuals.</p><div class="news-date">December 2025</div></div>
+        </div>
+        <div class="news-card">
+          <span class="news-source">Jerusalem Post</span>
+          <div><h4>2025: A decade-defining window in Israeli real estate</h4><p>Commentary on 2025 as a critical moment for foreign investors identifying opportunities as local investors hesitate, with foreign investment remaining strong among diaspora communities.</p><div class="news-date">2025</div></div>
+        </div>
+        <div class="news-card">
+          <span class="news-source">Times of Israel</span>
+          <div><h4>Foreign interest in Israeli homes heats up as local demand cools</h4><p>Following the ceasefire, foreign buyer interest increased significantly — particularly in Jerusalem and Tel Aviv — with demand picking up from the US and France.</p><div class="news-date">October 2024</div></div>
+        </div>
+        <div class="news-card">
+          <span class="news-source">Ynet News</span>
+          <div><h4>The billionaire-fueled shakeup in Israel's luxury housing</h4><p>Major luxury transactions in 2025 involving foreign billionaires, including historic villa sales in Jerusalem and foreign floor purchases in luxury Tel Aviv towers.</p><div class="news-date">2025</div></div>
+        </div>
+        <div class="news-card">
+          <span class="news-source">Globes</span>
+          <div><h4>Foreign real estate buyers face headwinds from strong shekel</h4><p>The shekel's 21% appreciation against the dollar since October 2023 has created currency challenges, though Jerusalem remains the primary target with 44% of foreign purchases.</p><div class="news-date">2025</div></div>
+        </div>
+        <div class="news-card">
+          <span class="news-source">Times of Israel</span>
+          <div><h4>Fueled by fear and fraternity, foreigners buying up Israeli homes</h4><p>Rising global antisemitism is driving diaspora Jews to purchase Israeli property as both a safe haven and hedge against uncertainty in their home countries.</p><div class="news-date">2024-2025</div></div>
+        </div>
+      </div>
+
     </div>
   </section>
 
   <section class="cta-section">
     <div class="container">
-      <h2>Interested in buying in Tel Aviv?</h2>
+      <h2>Ready to explore a city?</h2>
       <p>Let's discuss which neighborhoods match your goals, budget, and timeline.</p>
-      <a href="#" class="btn btn-primary" onclick="showPage('book');return false" >Book a Tel Aviv Consultation</a>
+      <a href="#" class="btn btn-primary" onclick="showPage('book');return false">Book a City Consultation</a>
     </div>
   </section>
 </div><!-- end page-cities -->
@@ -1789,6 +2085,16 @@ main { padding-top: 72px; }
 <!-- ===== JAVASCRIPT ===== -->
 <script>
 // Page navigation
+function showCity(cityId, btn) {
+  document.querySelectorAll('.city-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('city-' + cityId).classList.add('active');
+  document.querySelectorAll('.city-nav-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  // Scroll to top of city content
+  const nav = document.getElementById('cityNav');
+  if (nav) nav.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
