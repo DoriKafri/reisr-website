@@ -141,12 +141,16 @@ main { padding-top: 72px; }
 /* ===== HERO ===== */
 .hero {
   position: relative;
-  background: linear-gradient(135deg, #1E2A36 0%, #2C5F7C 50%, #3A7FA3 100%);
+  background: #1E2A36;
   overflow: hidden;
 }
+.hero-video {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; z-index: 0; opacity: 0.55;
+}
 .hero::before {
-  content: ''; position: absolute; inset: 0;
-  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+  content: ''; position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(135deg, rgba(30,42,54,0.7) 0%, rgba(44,95,124,0.4) 50%, rgba(30,42,54,0.6) 100%);
 }
 .hero > .container {
   position: relative; z-index: 2;
@@ -518,6 +522,22 @@ main { padding-top: 72px; }
 .news-card p { font-size: 0.813rem; color: var(--charcoal-500); }
 .news-date { font-size: 0.7rem; color: var(--charcoal-300); margin-top: 4px; }
 
+/* ===== PROPERTIES FEED ===== */
+.properties-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; margin-top: 40px; }
+.prop-card { background: var(--white); border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--stone-200); transition: all 0.3s; }
+.prop-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.prop-img { height: 220px; background-size: cover; background-position: center; position: relative; }
+.prop-badge { position: absolute; top: 12px; left: 12px; padding: 5px 12px; border-radius: var(--r-full); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+.prop-badge-sale { background: var(--sea-700); color: white; }
+.prop-badge-rent { background: var(--sage-600); color: white; }
+.prop-price { position: absolute; bottom: 12px; right: 12px; background: rgba(0,0,0,0.7); color: white; padding: 6px 14px; border-radius: var(--r-sm); font-family: var(--font-serif); font-size: 1.1rem; backdrop-filter: blur(4px); }
+.prop-body { padding: 20px; }
+.prop-body h4 { font-size: 1rem; margin-bottom: 6px; }
+.prop-loc { font-size: 0.813rem; color: var(--charcoal-500); margin-bottom: 12px; }
+.prop-meta { display: flex; gap: 20px; font-size: 0.813rem; color: var(--charcoal-500); }
+.prop-meta-item { display: flex; align-items: center; gap: 6px; }
+.prop-meta-icon { font-size: 1rem; }
+
 /* ===== BLOG / RESOURCES ===== */
 .resource-filters { display: flex; gap: 12px; margin-top: 32px; flex-wrap: wrap; }
 .filter-btn {
@@ -617,6 +637,8 @@ main { padding-top: 72px; }
   .pathways-grid { grid-template-columns: 1fr 1fr; }
   .process-steps { grid-template-columns: 1fr; }
   .cities-scroll { grid-template-columns: 1fr; }
+  .properties-grid { grid-template-columns: 1fr; }
+  .prop-img { height: 200px; }
   .articles-grid { grid-template-columns: 1fr; }
   .testimonials-grid { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; }
@@ -733,6 +755,9 @@ main { padding-top: 72px; }
 
   <!-- HERO -->
   <section class="hero">
+    <video class="hero-video" autoplay muted loop playsinline>
+      <source src="https://harova.co.il/wp-content/themes/houzez-child/images/home_main_hero_bg_vid_v1.webm" type="video/webm">
+    </video>
     <div class="container">
       <div class="hero-content">
         <div class="hero-badge">
@@ -968,6 +993,161 @@ main { padding-top: 72px; }
             <span class="city-budget">From ~$350K+</span>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED PROPERTIES -->
+  <section class="section">
+    <div class="container">
+      <p class="overline">On the market now</p>
+      <h2>Featured properties in Tel Aviv &ndash; Jaffa</h2>
+      <p style="color:var(--charcoal-500);max-width:640px;margin-top:12px;">Curated listings from the Tel Aviv&ndash;Jaffa market. As your buyer advocate, Yuval can evaluate any of these on your behalf — running the numbers, inspecting the property, and negotiating from your side.</p>
+      <div class="properties-grid">
+
+        <div class="prop-card">
+          <div class="prop-img" style="background-image:url('https://harova.co.il/wp-content/uploads/1-18_1024x684.webp')">
+            <span class="prop-badge prop-badge-sale">For Sale</span>
+            <span class="prop-price">&#8362;9,550,000</span>
+          </div>
+          <div class="prop-body">
+            <h4>Garden Apartment, 5 Rooms &mdash; Geula St.</h4>
+            <p class="prop-loc">Kerem HaTeimanim, Tel Aviv</p>
+            <div class="prop-meta">
+              <span class="prop-meta-item"><span class="prop-meta-icon">&#128715;</span> 4 Rooms</span>
+              <span class="prop-meta-item"><span class="prop-meta-icon">&#9633;</span> 115 m&sup2;</span>
+              <span class="prop-meta-item"><span class="prop-meta-icon">&#127807;</span> 58 m&sup2; garden</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="prop-card">
+          <div class="prop-img" style="background-image:url('https://harova.co.il/wp-content/uploads/D4D3516C-B204-4F30-B5B1-DF614F14C45D.webp')">
+            <span class="prop-badge prop-badge-sale">For Sale</span>
+            <span class="prop-price">&#8362;5,300,000</span>
+          </div>
+          <div class="prop-body">
+            <h4>3-Room Apartment at Kikar HaMedina</h4>
+            <p class="prop-loc">City Center, Tel Aviv</p>
+            <div class="prop-meta">
+              <span class="prop-meta-item"><span class="prop-meta-icon">&#128715;</span> 3 Rooms</span>
+              <span class="prop-meta-item"><span class="prop-meta-icon">&#9633;</span> 70 m&sup2;</span>
+              <span class="prop-meta-item"><span class="prop-meta-icon">&#127956;</span> 12 m&sup2; balcony</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="prop-card">
+          <div class="prop-img" style="background-image:url('https://harova.co.il/wp-content/uploads/47096593-BBB2-4C29-99E9-C66DD94B2E0A.webp')">
+            <span class="prop-badge prop-badge-sale">For Sale</span>
+            <span class="prop-price">&#8362;3,820,000</span>
+          </div>
+          <div class="prop-body">
+            <h4>3-Room Apt on Ibn Gabirol</h4>
+            <p class="prop-loc">Old North (Southern Section), Tel Aviv</p>
+            <div class="prop-meta">
+              <span class="prop-meta-item"><span class="prop-meta-icon">&#128715;</span> 5 Rooms</span>
+              <span class="prop-meta-item"><span class="prop-meta-icon">&#9633;</span> 68 m&sup2;</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="prop-card">
+          <div class="prop-img" style="background-image:url('https://harova.co.il/wp-content/uploads/file_000000004d58722fb67854326943a81a_1024x682-592x444.webp')">
+            <span class="prop-badge prop-badge-sale">For Sale</span>
+            <span class="prop-price">&#8362;6,200,000</span>
+          </div>
+          <div class="prop-body">
+            <h4>Mini Penthouse in North Jaffa</h4>
+            <p class="prop-loc">North Jaffa, Tel Aviv-Jaffa</p>
+            <div class="prop-meta">
+              <span class="prop-meta-item"><span class="prop-meta-icon">&#128715;</span> 5 Rooms</span>
+              <span class="prop-meta-item"><span class="prop-meta-icon">&#9633;</span> 87 m&sup2;</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="prop-card">
+          <div class="prop-img" style="background-image:url('https://harova.co.il/wp-content/uploads/20260209_151842_1024x768-592x444.webp')">
+            <span class="prop-badge prop-badge-sale">For Sale</span>
+            <span class="prop-price">&#8362;3,750,000</span>
+          </div>
+          <div class="prop-body">
+            <h4>3-Room Apt with Sea View, Montefiore</h4>
+            <p class="prop-loc">Montefiore, Tel Aviv</p>
+            <div class="prop-meta">
+              <span class="prop-meta-item"><span class="prop-meta-icon">&#128715;</span> 2 Rooms</span>
+              <span class="prop-meta-item"><span class="prop-meta-icon">&#9633;</span> 76 m&sup2;</span>
+              <span class="prop-meta-item"><span class="prop-meta-icon">&#127754;</span> Sea view</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="prop-card">
+          <div class="prop-img" style="background-image:url('https://harova.co.il/wp-content/uploads/s-1-1-592x444.webp')">
+            <span class="prop-badge prop-badge-sale">For Sale</span>
+            <span class="prop-price">&#8362;7,500,000</span>
+          </div>
+          <div class="prop-body">
+            <h4>Penthouse, 4 Rooms &mdash; Central Jaffa</h4>
+            <p class="prop-loc">Central Jaffa, Tel Aviv-Jaffa</p>
+            <div class="prop-meta">
+              <span class="prop-meta-item"><span class="prop-meta-icon">&#128715;</span> 3 Rooms</span>
+              <span class="prop-meta-item"><span class="prop-meta-icon">&#9633;</span> 158 m&sup2;</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="prop-card">
+          <div class="prop-img" style="background-image:url('https://harova.co.il/wp-content/uploads/WhatsApp-Image-2026-02-24-at-17.42.09-592x444.webp')">
+            <span class="prop-badge prop-badge-sale">For Sale</span>
+            <span class="prop-price">&#8362;7,500,000</span>
+          </div>
+          <div class="prop-body">
+            <h4>4-Room Apt &mdash; MidTown TLV</h4>
+            <p class="prop-loc">MidTown, Tel Aviv</p>
+            <div class="prop-meta">
+              <span class="prop-meta-item"><span class="prop-meta-icon">&#128715;</span> 3 Rooms</span>
+              <span class="prop-meta-item"><span class="prop-meta-icon">&#9633;</span> 145 m&sup2;</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="prop-card">
+          <div class="prop-img" style="background-image:url('https://harova.co.il/wp-content/uploads/20260219_151840_1024x768.webp')">
+            <span class="prop-badge prop-badge-rent">For Rent</span>
+            <span class="prop-price">&#8362;8,400/mo</span>
+          </div>
+          <div class="prop-body">
+            <h4>Authentic Apartment on Light Rail Axis</h4>
+            <p class="prop-loc">North Jaffa, Jaffa</p>
+            <div class="prop-meta">
+              <span class="prop-meta-item"><span class="prop-meta-icon">&#128715;</span> 6 Rooms</span>
+              <span class="prop-meta-item"><span class="prop-meta-icon">&#9633;</span> 148 m&sup2;</span>
+              <span class="prop-meta-item"><span class="prop-meta-icon">&#127956;</span> 12 m&sup2; balcony</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="prop-card">
+          <div class="prop-img" style="background-image:url('https://harova.co.il/wp-content/uploads/46eabde1-b1e9-4b56-b4cc-aaee12dbc8a5-592x444.webp')">
+            <span class="prop-badge prop-badge-rent">For Rent</span>
+            <span class="prop-price">&#8362;6,900/mo</span>
+          </div>
+          <div class="prop-body">
+            <h4>Renovated 3.5-Room Apt, Florentin</h4>
+            <p class="prop-loc">Florentin, Tel Aviv</p>
+            <div class="prop-meta">
+              <span class="prop-meta-item"><span class="prop-meta-icon">&#128715;</span> 3.5 Rooms</span>
+              <span class="prop-meta-item"><span class="prop-meta-icon">&#9633;</span> 62 m&sup2;</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div style="text-align:center;margin-top:40px;">
+        <p style="color:var(--charcoal-500);font-size:0.938rem;max-width:500px;margin:0 auto 20px;">Want Yuval to evaluate a property for you? Get an independent assessment before you make an offer.</p>
+        <a href="#" class="btn btn-primary" onclick="showPage('book');return false">Request a Property Evaluation</a>
       </div>
     </div>
   </section>
